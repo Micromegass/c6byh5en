@@ -21,14 +21,18 @@ class Api::V1::ProductsController < ApplicationController
 
  def destroy
     product = Product.find(params[:id])
-    product.destroy
-    render json: product, status: 201
+    if product.destroy
+    render json: product, status: 204
+    else 
+      render json: { errors: product.errors }, status: 422
+    end 
  end
+ 
 
  def update 
     product = Product.find(params[:id])
     if product.update_attributes(product_params)
-    render json: product, status: 201
+    render json: product, status: 200
     else 
       render json: { errors: product.errors }, status: 422
     end 
